@@ -36,10 +36,10 @@ class Question(db.Model):
   category = relationship("Category", back_populates="questions")
   difficulty = Column(Integer)
 
-  def __init__(self, question, answer, category, difficulty):
+  def __init__(self, question, answer, category_id, difficulty):
     self.question = question
     self.answer = answer
-    self.category = category
+    self.category_id = category_id
     self.difficulty = difficulty
 
   def insert(self):
