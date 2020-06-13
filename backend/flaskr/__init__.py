@@ -26,9 +26,11 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Methods', 'GET, POST, DELETE, PATCH, OPTIONS')
         return response
 
-  def paginate(page, page_size=QUESTIONS_PER_PAGE):
+  def paginate(page, total, page_size=QUESTIONS_PER_PAGE):
     start =  (page - 1) * page_size
     end = start + page_size
+    if end > total:
+      end = total
     return start, end
   
   '''
@@ -37,7 +39,7 @@ def create_app(test_config=None):
   '''
   @app.route('/api/categories', methods=['GET'])
   def get_categories():
-    categories = Category.query.all()
+    categories = Category.query.order_by(Category.id).all()
     response = {}
     for category in categories:
       response[category.id] = category.type
@@ -68,18 +70,19 @@ def create_app(test_config=None):
     if len(result) == 0:
       abort(404)
     categories = {}
-    for category in Category.query.order_by(Category.type).all():
+    for category in Category.query.order_by(Category.id).all():
       categories[category.id] = category.type
+    total = len(result)
     response = {
       'questions': [],
-      'totalQuestions': len(result),
+      'total_questions': total,
       'categories': categories,
-      'currentCategory': None
+      'current_category': None
     }
     page = request.args.get('page', 1, type=int)
-    start, end = paginate(page)
+    start, end = paginate(page, total)
     for i in range(start, end):
-      response['questions'].append(result[i].question)
+      response['questions'].append(result[i].format())
     
     return jsonify(response)
 
@@ -90,6 +93,7 @@ def create_app(test_config=None):
   TEST: When you click the trash icon next to a question, the question will be removed.
   This removal will persist in the database and when you refresh the page. 
   '''
+  
 
   '''
   @TODO: 
