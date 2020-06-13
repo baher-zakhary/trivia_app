@@ -25,6 +25,12 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
         response.headers.add('Access-Control-Allow-Methods', 'GET, POST, DELETE, PATCH, OPTIONS')
         return response
+
+  def paginate(page, page_size=QUESTIONS_PER_PAGE):
+    start =  (page - 1) * page_size
+    end = start + page_size
+    return start, end
+  
   '''
   @: Create an endpoint to handle GET requests 
   for all available categories.
@@ -32,22 +38,21 @@ def create_app(test_config=None):
   @app.route('/api/categories', methods=['GET'])
   def get_categories():
     categories = Category.query.all()
-    categories_formatted = {}
+    response = {}
     for category in categories:
-      categories_formatted[category.id] = category.type
+      response[category.id] = category.type
 
     if len(categories) == 0:
       abort(404)
     else:
       return jsonify({
-        "categories": categories_formatted,
+        "categories": response,
         "success": True,
-        "total": len(categories_formatted)
+        "total": len(response)
       })
 
   '''
-  @TODO: 
-  Create an endpoint to handle GET requests for questions, 
+  @: Create an endpoint to handle GET requests for questions, 
   including pagination (every 10 questions). 
   This endpoint should return a list of questions, 
   number of total questions, current category, categories. 
@@ -57,6 +62,26 @@ def create_app(test_config=None):
   ten questions per page and pagination at the bottom of the screen for three pages.
   Clicking on the page numbers should update the questions. 
   '''
+  @app.route('/api/questions', methods=['GET'])
+  def get_questions():
+    result = Question.query.order_by(Question.id).all()
+    if len(result) == 0:
+      abort(404)
+    categories = {}
+    for category in Category.query.order_by(Category.type).all():
+      categories[category.id] = category.type
+    response = {
+      'questions': [],
+      'totalQuestions': len(result),
+      'categories': categories,
+      'currentCategory': None
+    }
+    page = request.args.get('page', 1, type=int)
+    start, end = paginate(page)
+    for i in range(start, end):
+      response['questions'].append(result[i].question)
+    
+    return jsonify(response)
 
   '''
   @TODO: 
