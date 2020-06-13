@@ -21,20 +21,27 @@ def create_app(test_config=None):
   @ Use the after_request decorator to set Access-Control-Allow
   '''
   @app.after_request
-    def after_request(response):
+  def after_request(response):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
         response.headers.add('Access-Control-Allow-Methods', 'GET, POST, DELETE, PATCH, OPTIONS')
         return response
   '''
-  @TODO: 
-  Create an endpoint to handle GET requests 
+  @: Create an endpoint to handle GET requests 
   for all available categories.
   '''
   @app.route('/api/categories', methods=['GET'])
   def get_categories():
     categories = Category.query.all()
+    categories_formatted = [category.format() for category in categories]
+
     if len(categories) == 0:
       abort(404)
+    else:
+      return jsonify({
+        "categories": categories_formatted,
+        "success": True,
+        "total": len(categories_formatted)
+      })
 
   '''
   @TODO: 
