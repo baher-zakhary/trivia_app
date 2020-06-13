@@ -32,7 +32,9 @@ def create_app(test_config=None):
   @app.route('/api/categories', methods=['GET'])
   def get_categories():
     categories = Category.query.all()
-    categories_formatted = [category.format() for category in categories]
+    categories_formatted = {}
+    for category in categories:
+      categories_formatted[category.id] = category.type
 
     if len(categories) == 0:
       abort(404)
