@@ -114,26 +114,38 @@ def create_app(test_config=None):
   '''
   @app.route('/api/questions', methods=['POST'])
   def add_question():
-    try:
-      body = request.get_json()
-      question = body.get('question', None)
-      answer = body.get('answer', None)
-      difficulty = body.get('difficulty', None)
-      category_id = body.get('category', None)
-    except:
-      abort(400)
-    if question is None or answer is None or difficulty is None or category_id is None:
-      abort(422)
-    try:
-      new_question = Question(question=question, answer=answer, category_id=category_id, difficulty=difficulty)
-      new_question.insert()
-    except:
-      abort(422)
-    return jsonify({"success": True})
+    body = request.get_json()
+    searchTerm = body.get('searchTerm', None)
+    if searchTerm is not None:
+      try:
+        searchResult = Question.query.filter(Question.question.ilike(f'%{searchTerm}%')).all()
+        return jsonify({
+          "questions": [res.format() for res in searchResult],
+          "total_questions": len(searchResult),
+          "current_category": None,
+          "success": True
+        })
+      except:
+        abort(422)
+    else:
+      try:
+        question = body.get('question', None)
+        answer = body.get('answer', None)
+        difficulty = body.get('difficulty', None)
+        category_id = body.get('category', None)
+      except:
+        abort(400)
+      if question is None or answer is None or difficulty is None or category_id is None:
+        abort(422)
+      try:
+        new_question = Question(question=question, answer=answer, category_id=category_id, difficulty=difficulty)
+        new_question.insert()
+      except:
+        abort(422)
+      return jsonify({"success": True})
 
   '''
-  @TODO: 
-  Create a POST endpoint to get questions based on a search term. 
+  @: Create a POST endpoint to get questions based on a search term. 
   It should return any questions for whom the search term 
   is a substring of the question. 
 
@@ -141,16 +153,26 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
-
+  # SEE QUESTIONS POST ENDPOINT
   '''
-  @TODO: 
-  Create a GET endpoint to get questions based on category. 
+  @: Create a GET endpoint to get questions based on category. 
 
   TEST: In the "List" tab / main screen, clicking on one of the 
   categories in the left column will cause only questions of that 
   category to be shown. 
   '''
-
+  @app.route('/api/categories/<int:category_id>/questions', methods=['GET'])
+  def get_questions_by_category(category_id):
+    questions = Question.query.filter(Question.category_id == category_id).all()
+    if len(questions) == 0:
+      abort(404)
+    else:
+      return jsonify({
+        "questions": [question.format() for question in questions],
+        "total_questions": len(questions),
+        "current_category": category_id,
+        "success": True
+      })
 
   '''
   @TODO: 
