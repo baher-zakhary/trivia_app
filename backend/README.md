@@ -66,7 +66,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
-## DOCUMENTATION
+## Documentation
 
 Endpoints
 
@@ -77,18 +77,18 @@ Endpoints
 	- categories, that contains a object of id: category_string key:value pairs. 
 	- success, that contains a boolean to indicate success or failure status
 	- total, that states the total number of categories returned
-{
-  "categories": {
-    "1": "Science", 
-    "2": "Art", 
-    "3": "Geography", 
-    "4": "History", 
-    "5": "Entertainment", 
-    "6": "Sports"
-  }, 
-  "success": true, 
-  "total": 6
-}
+    {
+      "categories": {
+        "1": "Science", 
+        "2": "Art", 
+        "3": "Geography", 
+        "4": "History", 
+        "5": "Entertainment", 
+        "6": "Sports"
+      },
+      "success": true, 
+      "total": 6
+    }
 
 
 ## Testing
