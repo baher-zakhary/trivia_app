@@ -77,6 +77,7 @@ Endpoints
 	- categories, that contains a object of id: category_string key:value pairs. 
 	- success, that contains a boolean to indicate success or failure status
 	- total, that states the total number of categories returned
+    ```
     {
       "categories": {
         "1": "Science", 
@@ -89,6 +90,7 @@ Endpoints
       "success": true, 
       "total": 6
     }
+    ```
 
 
 ## Testing
