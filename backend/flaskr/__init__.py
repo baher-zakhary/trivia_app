@@ -41,13 +41,13 @@ def create_app(test_config=None):
   @app.route('/api/categories', methods=['GET'])
   def get_categories():
     categories = Category.query.order_by(Category.id).all()
-    response = {}
-    for category in categories:
-      response[category.id] = category.type
-
     if len(categories) == 0:
       abort(404)
     else:
+      response = {}
+      for category in categories:
+        response[category.id] = category.type
+
       return jsonify({
         "categories": response,
         "success": True,
@@ -67,24 +67,28 @@ def create_app(test_config=None):
   '''
   @app.route('/api/questions', methods=['GET'])
   def get_questions():
-    result = Question.query.order_by(Question.id).all()
-    if len(result) == 0:
+    questionsRes = Question.query.order_by(Question.id).all()
+    categoriesRes = Category.query.order_by(Category.id).all()
+    if len(questionsRes) == 0 or len(categoriesRes) == 0:
       abort(404)
     categories = {}
-    for category in Category.query.order_by(Category.id).all():
+    for category in categoriesRes:
       categories[category.id] = category.type
-    total = len(result)
+    total = len(questionsRes)
     response = {
       'questions': [],
       'total_questions': total,
       'categories': categories,
-      'current_category': None
+      'current_category': None,
+      'success': True
     }
     page = request.args.get('page', 1, type=int)
     start, end = paginate(page, total)
     for i in range(start, end):
-      response['questions'].append(result[i].format())
-    
+      response['questions'].append(questionsRes[i].format())
+    if len(response['questions']) == 0:
+      abort(404)
+
     return jsonify(response)
 
   '''
@@ -135,9 +139,9 @@ def create_app(test_config=None):
         difficulty = body.get('difficulty', None)
         category_id = body.get('category', None)
       except:
-        abort(400)
-      if question is None or answer is None or difficulty is None or category_id is None:
         abort(422)
+      if question is None or answer is None or difficulty is None or category_id is None:
+        abort(400)
       try:
         new_question = Question(question=question, answer=answer, category_id=category_id, difficulty=difficulty)
         new_question.insert()
