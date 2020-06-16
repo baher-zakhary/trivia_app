@@ -77,20 +77,20 @@ Endpoints
 	- categories, that contains a object of id: category_string key:value pairs. 
 	- success, that contains a boolean to indicate success or failure status
 	- total, that states the total number of categories returned
-    ```
-    {
-      "categories": {
-        "1": "Science", 
-        "2": "Art", 
-        "3": "Geography", 
-        "4": "History", 
-        "5": "Entertainment", 
-        "6": "Sports"
-      },
-      "success": true, 
-      "total": 6
-    }
-    ```
+```
+{
+"categories": {
+"1": "Science", 
+"2": "Art", 
+"3": "Geography", 
+"4": "History", 
+"5": "Entertainment", 
+"6": "Sports"
+},
+"success": true, 
+"total": 6
+}
+```
     
 **GET '/api/questions'**
 - Fetches a list of questions per page and a dictionary of all categories in which the keys are the ids and the value is the 		   corresponding string of the category
@@ -101,31 +101,44 @@ Endpoints
 	- categories, that contains a object of id: category_string key:value pairs. 
 	- success, that contains a boolean to indicate success or failure status
 	- total_questions, that states the total number of categories returned
-    ```
-    {
-  "categories": {
-    "1": "Science", 
-    "2": "Art", 
-    "3": "Geography", 
-    "4": "History", 
-    "5": "Entertainment", 
-    "6": "Sports"
-  }, 
-  "current_category": null, 
-  "questions": [
-    {
-      "answer": "Tom Cruise", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 4, 
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    }, 
-  ], 
-  "success": true, 
-  "total_questions": 20
+```
+{
+"categories": {
+"1": "Science", 
+"2": "Art", 
+"3": "Geography", 
+"4": "History", 
+"5": "Entertainment", 
+"6": "Sports"
+}, 
+"current_category": null, 
+"questions": [
+{
+"answer": "Tom Cruise", 
+"category": 5, 
+"difficulty": 4, 
+"id": 4, 
+"question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+}, 
+], 
+"success": true, 
+"total_questions": 20
 }
 
-    ```
+```
+
+**DELETE '/api/questions/{id}'**
+- Deletes a question with the provided ID
+- Request Arguments:
+	- id: route parameter of the id of the question to be deleted
+- Returns: An object with keys
+	- success, that contains a boolean to indicate success or failure status
+```
+{
+  "success": true
+}
+
+```
     
 ## Testing
 To run the tests, run
