@@ -138,7 +138,6 @@ Endpoints
 }
 ```
 
-
 **POST '/api/questions' (For searching for questions)**
 - searches for questions containing the search term
 - Request Arguments:
@@ -170,7 +169,6 @@ Endpoints
   "total_questions": 2
 }
 ```
-
 
 **POST '/api/questions' (For adding a question)**
 - Adds a new question
@@ -210,6 +208,29 @@ Endpoints
   ], 
   "success": true, 
   "total_questions": 1
+}
+```
+
+**POST '/api/quizzes'**
+- Gets a random question from the selected category to play quizzes game
+- Request Arguments:
+	- previous_questions, takes a list of previous questions IDs as to not repeat a question that was previously answered
+	- quiz_category, takes an object with two keys
+			-	type, the string type of a category
+			-	id, the int id of a category
+- Returns: An object with keys
+	- question, the next random question object in the current quiz game
+	- success, that contains a boolean to indicate success or failure status
+```
+{
+  "question": {
+    "answer": "Orange :D", 
+    "category": 1, 
+    "difficulty": 1, 
+    "id": 24, 
+    "question": "What is the color of Oranges ?"
+  }, 
+  "success": true
 }
 ```
 
