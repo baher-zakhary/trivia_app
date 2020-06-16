@@ -91,8 +91,42 @@ Endpoints
       "total": 6
     }
     ```
+    
+**GET '/api/questions'**
+- Fetches a list of questions per page and a dictionary of all categories in which the keys are the ids and the value is the 		   corresponding string of the category
+- Request Arguments:
+	- page: query parameter with a value equals to required page of questions
+- Returns: An object with keys
+	- questions, an array of question objects in requested page
+	- categories, that contains a object of id: category_string key:value pairs. 
+	- success, that contains a boolean to indicate success or failure status
+	- total_questions, that states the total number of categories returned
+    ```
+    {
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+  ], 
+  "success": true, 
+  "total_questions": 20
+}
 
-
+    ```
+    
 ## Testing
 To run the tests, run
 ```
