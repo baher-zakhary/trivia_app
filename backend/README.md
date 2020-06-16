@@ -139,7 +139,56 @@ Endpoints
 }
 
 ```
-    
+
+
+**POST '/api/questions' (For searching for questions)**
+- searches for questions containing the search term
+- Request Arguments:
+	- searchTerm: the term to search by for questions
+- Returns: An object with keys
+	- questions, an array of question objects in that contains the search term
+	- success, that contains a boolean to indicate success or failure status
+	- total_questions, that states the total number of categories returned
+```
+{
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 2
+}
+```
+
+
+**POST '/api/questions' (For adding a question)**
+- Adds a new question
+- Request Arguments:
+	- answer:  the answer of the question
+	- category:  the category of the question
+	- difficulty:  its difficulty
+	- question:  the question
+- Returns: An object with keys
+	- success, that contains a boolean to indicate success or failure status
+```
+{
+  "success": true
+}
+```
+
 ## Testing
 To run the tests, run
 ```
