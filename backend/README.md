@@ -124,7 +124,6 @@ Endpoints
 "success": true, 
 "total_questions": 20
 }
-
 ```
 
 **DELETE '/api/questions/{id}'**
@@ -137,7 +136,6 @@ Endpoints
 {
   "success": true
 }
-
 ```
 
 
@@ -186,6 +184,32 @@ Endpoints
 ```
 {
   "success": true
+}
+```
+
+**GET '/api/categories/{category_id}/questions'**
+- Fetches a list of questions in a certain category
+- Request Arguments:
+	- category_id: route parameter specifies the category ID
+- Returns: An object with keys
+	- questions, an array of question objects in requested category
+	- current_category, the id of the requested category
+	- success, that contains a boolean to indicate success or failure status
+	- total_questions, that states the total number of categories returned
+```
+{
+  "current_category": 3, 
+  "questions": [
+    {
+      "answer": "Lake Victoria", 
+      "category": 3, 
+      "difficulty": 2, 
+      "id": 13, 
+      "question": "What is the largest lake in Africa?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 1
 }
 ```
 
