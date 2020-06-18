@@ -63,17 +63,17 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_delete_question(self):
-        # Delete question test works once for each ID, you have
-        # to check that the ID is of a question that really exists
-        # ####### OR #######
-        # dropdb trivia_test
-        # createdb trivia_test
-        # psql trivia_test < trivia.psql
-        # python test_flaskr.py
-        response = self.client().delete('/api/questions/12')
+        questionId = 0
+        question = None
+        while question is None:
+            questionId += 1
+            question = Question.query.filter(Question.id == questionId).first()
+        response = self.client().delete('/api/questions/' + str(questionId))
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
+        question = Question.query.filter(Question.id == questionId).first()
+        self.assertEqual(question, None)
 
     def test_delete_question_404(self):
         response = self.client().delete('/api/questions/-1')
@@ -105,7 +105,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_search_question(self):
-        search_term = {"searchTerm": "entitled"}
+        search_term = {"searchTerm": "a"}
         response = self.client().post('/api/questions', json=search_term)
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 200)
