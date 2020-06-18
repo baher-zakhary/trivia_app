@@ -107,10 +107,10 @@ def create_app(test_config=None):
     def delete_question(id):
         try:
             question = Question.query.filter(Question.id == id).first()
-            print(question)
             if question is None:
                 abort(404)
-            question.delete()
+            else:
+                question.delete()
         except Exception:
             abort(500)
         return jsonify({"success": True})
