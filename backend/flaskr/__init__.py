@@ -107,10 +107,11 @@ def create_app(test_config=None):
     def delete_question(id):
         try:
             question = Question.query.filter(Question.id == id).first()
+            print(question)
             if question is None:
                 abort(404)
             question.delete()
-        except e:
+        except Exception:
             abort(500)
         return jsonify({"success": True})
 
@@ -138,7 +139,7 @@ def create_app(test_config=None):
                     "current_category": None,
                     "success": True
                 })
-            except e:
+            except Exception:
                 abort(422)
         else:
             try:
@@ -146,7 +147,7 @@ def create_app(test_config=None):
                 answer = body.get('answer', None)
                 difficulty = body.get('difficulty', None)
                 category_id = body.get('category', None)
-            except e:
+            except Exception:
                 abort(422)
             if (question is None or answer is None or difficulty is None
                or category_id is None):
@@ -158,7 +159,7 @@ def create_app(test_config=None):
                     category_id=category_id,
                     difficulty=difficulty)
                 new_question.insert()
-            except e:
+            except Exception:
                 abort(422)
             return jsonify({"success": True})
 
@@ -229,7 +230,7 @@ def create_app(test_config=None):
                     "success": True,
                     "question": question.format()
                 })
-        except e:
+        except Exception:
             abort(422)
 
     '''
